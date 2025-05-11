@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const paramField = document.createElement('div');
                     paramField.className = 'mb-3';
                     paramField.innerHTML = `
-                        <input type='text' id='param-${key}' class='w-full px-3 py-1.5 text-sm text-gray-700 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent rounded-md' placeholder='${placeholderText}'>
+                        <input type='text' id='param-${key}' class='w-full px-3 py-1.5 text-sm text-gray-700 border border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent rounded-md' placeholder='${placeholderText}'>
                         <div id='error-${key}' class='text-red-500 text-xs mt-1 hidden'>This field is required</div>
                     `;
                     paramsContainer.appendChild(paramField);
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const paramField = document.createElement('div');
                     paramField.className = 'mb-3';
                     paramField.innerHTML = `
-                        <input type='text' id='param-${paramName}' class='w-full px-3 py-1.5 text-sm text-gray-700 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent rounded-md' placeholder='${placeholderText}'>
+                        <input type='text' id='param-${paramName}' class='w-full px-3 py-1.5 text-sm text-gray-700 border border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent rounded-md' placeholder='${placeholderText}'>
                         <div id='error-${paramName}' class='text-red-500 text-xs mt-1 hidden'>This field is required</div>
                     `;
                     paramsContainer.appendChild(paramField);
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const fullUrl = new URL(apiUrl, window.location.origin).href;
                 
                 const urlDisplayDiv = document.createElement('div');
-                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 font-mono text-xs overflow-hidden';
+                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 font-Poppins text-xs overflow-hidden border border-gray-500 rounded-md';
                 
                 const urlContent = document.createElement('div');
                 urlContent.className = 'break-all';
@@ -507,10 +507,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 } else if (contentType && contentType.includes('application/json')) {
                     const data = await response.json();
                     const responseText = JSON.stringify(data, null, 2);
-                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words'>${responseText}</pre>`;
+                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words font-Poppins'>${responseText}</pre>`;
                 } else {
                     const responseText = await response.text();
-                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words'>${responseText}</pre>`;
+                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words font-Poppins'>${responseText}</pre>`;
                 }
             } catch (error) {
                 const endTime = Date.now();
