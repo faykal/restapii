@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const fullUrl = new URL(apiUrl, window.location.origin).href;
                 
                 const urlDisplayDiv = document.createElement('div');
-                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 text-xs overflow-hidden border border-gray-500 rounded-md';
+                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 text-xs font-mono overflow-hidden border border-gray-500 rounded-md';
                 
                 const urlContent = document.createElement('div');
                 urlContent.className = 'break-all';
