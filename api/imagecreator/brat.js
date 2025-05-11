@@ -3,6 +3,7 @@ module.exports = {
     name: 'Brat',
     desc: 'Brat generator',
     category: 'Image Creator',
+    params: ['text'],
     async run(req, res) {
         try {
     const { text } = req.query;
