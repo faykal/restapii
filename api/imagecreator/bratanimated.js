@@ -1,8 +1,9 @@
 const axios = require('axios');
 module.exports = {
-    name: 'Brat',
+    name: 'Brat Animated',
     desc: 'Brat generator animated',
     category: 'Image Creator',
+    params: ['text'],
     async run(req, res) {
         try {
     const { text } = req.query;
