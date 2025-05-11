@@ -1,7 +1,7 @@
 const yts = require('yt-search');
 module.exports = {
-    name: 'TikTok',
-    desc: 'Search video on tiktok',
+    name: 'YouTube',
+    desc: 'Search video on youtube',
     category: 'Search',
     params: ['q'],
     async run(req, res) {
