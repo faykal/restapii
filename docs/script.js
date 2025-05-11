@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const fullUrl = new URL(apiUrl, window.location.origin).href;
                 
                 const urlDisplayDiv = document.createElement('div');
-                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 font-Poppins text-xs overflow-hidden border border-gray-500 rounded-md';
+                urlDisplayDiv.className = 'urlDisplay mb-4 p-3 bg-gray-50 text-xs overflow-hidden border border-gray-500 rounded-md';
                 
                 const urlContent = document.createElement('div');
                 urlContent.className = 'break-all';
@@ -507,10 +507,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 } else if (contentType && contentType.includes('application/json')) {
                     const data = await response.json();
                     const responseText = JSON.stringify(data, null, 2);
-                    responseData.innerHTML = `<pre class='font-family-Poppins whitespace-pre-wrap break-words'>${responseText}</pre>`;
+                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words'>${responseText}</pre>`;
                 } else {
                     const responseText = await response.text();
-                    responseData.innerHTML = `<pre class='font-family-Poppins whitespace-pre-wrap break-words'>${responseText}</pre>`;
+                    responseData.innerHTML = `<pre class='whitespace-pre-wrap break-words'>${responseText}</pre>`;
                 }
             } catch (error) {
                 const endTime = Date.now();
