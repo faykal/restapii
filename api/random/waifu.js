@@ -3,7 +3,7 @@ const axios = require('axios');
     async function anim() {
         try {
             const data = await axios.get(`https://api.waifu.pics/sfw/waifu`)
-            const response = await getBuffer(data.url)
+            const response = Buffer.from(data.url)
             return response
         } catch (error) {
             throw error;
