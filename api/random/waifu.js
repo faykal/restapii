@@ -19,15 +19,35 @@ const getBuffer = async (url, options) => {
     }
 }
 
-async function anim() {
-        try {
-            const data = `https://img12.pixhost.to/images/507/570627648_skyzopedia.jpg`
-            const response = await getBuffer(data)
-            return response
-        } catch (error) {
-            throw error;
-        }
+const fetchJson = async (url, options) => {
+    try {
+        options ? options : {}
+        const res = await axios({
+            method: 'GET',
+            url: url,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
+            },
+            ...options
+        })
+        return res.data
+    } catch (err) {
+        return err
     }
+}
+
+async function anim() {
+    try {
+        let type = ["blowjob", "neko", "trap", "waifu"]
+        let rn = type[Math.floor(Math.random() * type.length)]
+        const data = await fetchJson(`https://api.waifu.pics/nsfw/${rn}`)
+        const response = await getBuffer(data.url)
+        return response
+    } catch (error) {
+            throw error;
+    }
+}
+
 module.exports = {
     name: 'Waifu',
     desc: 'Waifu random image',
