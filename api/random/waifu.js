@@ -1,14 +1,33 @@
 const axios = require('axios');
 
-    async function anim() {
-        try {
-            const data = await axios.get(`https://api.waifu.pics/sfw/waifu`)
-            const response = Buffer.from(data.url)
-            return response
-        } catch (error) {
-            throw error;
-        }
+const getBuffer = async (url, options) => {
+    try {
+        options ? options : {}
+        const res = await axios({
+            method: "get",
+            url,
+            headers: {
+                'DNT': 1,
+                'Upgrade-Insecure-Request': 1
+            },
+            ...options,
+            responseType: 'arraybuffer'
+        })
+        return res.data
+    } catch (err) {
+        return err
     }
+}
+
+async function anim() {
+    try {
+        const data = await axios.get(`https://api.waifu.pics/sfw/waifu`)
+        const response = await getBuffer(data.url)
+        return response
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     name: 'Waifu',
