@@ -38,13 +38,11 @@ const fetchJson = async (url, options) => {
 
 async function anim() {
     try {
-        let type = ["blowjob", "neko", "trap", "waifu"]
-        let rn = type[Math.floor(Math.random() * type.length)]
-        const data = await fetchJson(`https://api.waifu.pics/nsfw/${rn}`)
+        const data = await fetchJson(`https://api.waifu.pics/sfw/waifu`)
         const response = await getBuffer(data.url)
         return response
     } catch (error) {
-            throw error;
+        throw error;
     }
 }
 
