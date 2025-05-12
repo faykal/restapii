@@ -20,15 +20,14 @@ const getBuffer = async (url, options) => {
 }
 
 async function anim() {
-    try {
-        const data = await axios.get(`https://api.waifu.pics/sfw/waifu`)
-        const response = await getBuffer(data.url)
-        return response
-    } catch (error) {
-        throw error;
+        try {
+            const data = `https://img12.pixhost.to/images/507/570627648_skyzopedia.jpg`
+            const response = await getBuffer(data)
+            return response
+        } catch (error) {
+            throw error;
+        }
     }
-}
-
 module.exports = {
     name: 'Waifu',
     desc: 'Waifu random image',
