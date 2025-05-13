@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         textContent.className = 'flex-grow mr-4 overflow-hidden';
         
         const title = document.createElement('h5');
-        title.className = 'text-lg font-semibold text-gray-700 truncate';
+        title.className = 'text-lg font-semibold text-black truncate';
         title.textContent = itemName || 'Unnamed Item';
     
         const description = document.createElement('p');
