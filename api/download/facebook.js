@@ -67,25 +67,6 @@ async function facebook(url) {
     }
 }
 
-module.exports = function (app) {
-app.get('/download/facebook', async (req, res) => {
-            const { url } = req.query;
-            if (!url) {
-                return res.status(400).json({ status: false, error: 'Url is required' });
-            }
-        try {
-            const results = await facebook(url);
-            res.status(200).json({
-                status: true,
-                result: results
-            });
-        } catch (error) {
-            res.status(500).send(`Error: ${error.message}`);
-        }
-});
-}
-
-const axios = require("axios")
 module.exports = {
     name: 'Facebook',
     desc: 'Download video/image on facebook',
