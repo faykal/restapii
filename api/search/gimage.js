@@ -1,0 +1,20 @@
+const axios = require("axios")
+module.exports = {
+    name: 'Gimage',
+    desc: 'Search google image',
+    category: 'Search',
+    params: ['q'],
+    async run(req, res) {
+        try {
+            const { q } = req.query;
+            if (!q) return res.status(400).json({ status: false, error: 'Query is required' });
+            const fay = await axios.get(`https://fastrestapis.fasturl.cloud/search/gimage?ask=${q}`)
+            res.status(200).json({
+                status: true,
+                result: fay.result
+            });
+        } catch (error) {
+            res.status(500).json({ status: false, error: error.message });
+        }
+    }
+}
