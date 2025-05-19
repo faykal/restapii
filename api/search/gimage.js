@@ -11,7 +11,7 @@ module.exports = {
             const fay = await axios.get(`https://fastrestapis.fasturl.cloud/search/gimage?ask=${q}`)
             res.status(200).json({
                 status: true,
-                result: fay.result
+                result: fay.data.result
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
