@@ -11,7 +11,7 @@ module.exports = {
             const pedo = await axios.get(`https://skyzxu-brat.hf.space/brat-animated?text=${text}`, { responseType: "arraybuffer" })
             let videoBuffer = pedo.data;
             res.writeHead(200, {
-                'Content-Type': 'image/png',
+                'Content-Type': 'video/mp4',
                 'Content-Length': videoBuffer.length,
             });
             res.end(videoBuffer);
