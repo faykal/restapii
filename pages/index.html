@@ -40,8 +40,8 @@ p, span, li, a, button, .btn, .info-box, .thank-you-box {
   WELCOME TO NOXXY API'S
 </header>
 
-<p class="text-center max-w-xl mx-auto mb-8 text-lg text-gray-500 fade-in delay-100">
-  Simple API with easy and minimalistic integration for WhatsApp Bot Developers.
+<p id="endpoint-text" class="max-w-xl mx-auto mb-8 text-center text-gray-500 fade-in delay-100">
+  Simple API with easy and minimalistic integration for WhatsApp Bot Developers. and a total of <span id="total-endpoint">56</span> active endpoints.
 </p>
 
 <!-- Action Buttons -->
@@ -60,24 +60,24 @@ p, span, li, a, button, .btn, .info-box, .thank-you-box {
 <div class="px-4 max-w-2xl mx-auto">
   <div class="grid grid-cols-2 gap-4 mb-10" id="status-boxes">
     <div id="status"
-      class="bg-gray-100 p-4 rounded-lg font-semibold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
+      class="bg-gray-100 p-4 rounded-lg font-bold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
       <i class="fas fa-globe text-xl text-gray-600 mb-2"></i><br>
       <span>Status: Active</span>
     </div>
     <div id="battery"
-      class="bg-gray-100 p-4 rounded-lg font-semibold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
+      class="bg-gray-100 p-4 rounded-lg font-bold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
       <i class="fas fa-battery-full text-xl text-gray-600 mb-2"></i><br>
-      <span>Battery: Loading...</span>
+      <span>Loading...</span>
     </div>
     <div id="clock"
-      class="bg-gray-100 p-4 rounded-lg font-semibold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
+      class="bg-gray-100 p-4 rounded-lg font-bold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
       <i class="far fa-clock text-xl text-gray-600 mb-2"></i><br>
-      <span>Time: Loading...</span>
+      <span>Loading...</span>
     </div>
     <div id="ip-address"
-      class="bg-gray-100 p-4 rounded-lg font-semibold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
+      class="bg-gray-100 p-4 rounded-lg font-bold text-center border border-gray-500 hover:shadow-md transform transition-all duration-300 hover:scale-105">
       <i class="fas fa-server text-xl text-gray-600 mb-2"></i><br>
-      <span>Loading IP address...</span>
+      <span>Loading...</span>
     </div>
   </div>
 </div>
@@ -147,7 +147,7 @@ p, span, li, a, button, .btn, .info-box, .thank-you-box {
 </section>
 
 <!-- Special Thank You -->
-<footer class="text-center text-secondary text-gray-400 py-8 px-4">
+<footer class="text-center text-secondary text-gray-500 py-8 px-4">
         © 2025 Faykal. Made with coffee.
     </footer>
 
@@ -183,13 +183,13 @@ p, span, li, a, button, .btn, .info-box, .thank-you-box {
   .then(response => response.text())
   .then(data => document.getElementById('konten-api').innerHTML = data);          
             
-  fetch('https://api.faykalbotz.my.id/endpoints')
+  fetch('./endpoints')
     .then(res => res.json())
     .then(data => {
-      document.getElementById('total-endpoint').innerHTML = `<i class="fas fa-server text-xl text-gray-600 mb-2"></i><br>Total Endpoint: ${data.count}`;
+      document.getElementById('total-endpoint').innerHTML = `${data.totalfitur}`;
     })
     .catch(err => {
-      document.getElementById('total-endpoint').textContent = 'Total Endpoint: Error';
+      document.getElementById('total-endpoint').textContent = `( not detected )`;
       console.error(err);
     });
 </script>
