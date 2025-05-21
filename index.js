@@ -21,8 +21,8 @@
     
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    app.use('/', express.static(path.join(__dirname, 'pages')));
     app.use('/', express.static(path.join(__dirname, '/')));
+    app.use('/', express.static(path.join(__dirname, 'pages')));
     app.use('/', express.static(path.join(__dirname, 'docs')));
     
     logger.info('Starting server initialization...');
@@ -134,7 +134,7 @@
     }
     
     app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, '/pages/page.html'));
+        res.sendFile(path.join(__dirname, '/pages/index.html'));
     });
     
     logger.info('Loading API endpoints...');
