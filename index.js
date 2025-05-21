@@ -148,7 +148,7 @@
         }, 0);
         res.json({
             status: true,
-            count: totalEndpoints,
+            totalfitur: totalEndpoints,
             endpoints: allEndpoints
         });
     });
