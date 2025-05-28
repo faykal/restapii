@@ -31,9 +31,6 @@ async function mobapay(uid, zone) {
     }));
 
     return {
-      username: data.data.user_info.user_name,
-      uid: uid,
-      zone: zone,
       first_recharge: [...first_recharge, ...(first_recharge2 || [])]
     };
   } catch (error) {
