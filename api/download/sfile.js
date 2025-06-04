@@ -115,7 +115,7 @@ const sfile = {
 
 module.exports = {
     name: 'Sfile',
-    desc: 'Download on Sfile',
+    desc: 'Download on sfile.mobi',
     category: 'Downloader',
     params: ['url'],
     async run(req, res) {
