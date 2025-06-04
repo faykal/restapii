@@ -50,7 +50,7 @@ module.exports = {
             const resp = await gpt(text, 'chatgpt4');
             res.status(200).json({
                 status: true,
-                result: resp
+                data: resp
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

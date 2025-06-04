@@ -42,7 +42,7 @@ module.exports = {
             const fay = await jadwalSholat.kota(q)
             res.status(200).json({
                 status: true,
-                result: fay
+                data: fay
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

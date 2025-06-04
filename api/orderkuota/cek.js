@@ -17,7 +17,7 @@ module.exports = {
                 if (latestTransaction) {
          res.status(200).json({
             status: true, 
-            result: latestTransaction
+            data: latestTransaction
         })
         } else {
             res.json({ message: "No transactions found." });

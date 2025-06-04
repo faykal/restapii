@@ -98,7 +98,7 @@ module.exports = {
             const result = await pxpic.create(image, "removebg")
             res.status(200).json({
                 status: true,
-                result: result.resultImageUrl
+                data: result.resultImageUrl
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

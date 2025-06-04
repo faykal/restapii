@@ -8,7 +8,7 @@ module.exports = {
         const { data } = await axios.get(`https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json`)
         res.status(200).json({
             status: true,
-            result: data.Infogempa.gempa
+            data: data.Infogempa.gempa
         });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

@@ -146,7 +146,7 @@ module.exports = {
         const qrData = await createQRIS(amount, codeqr);
         res.status(200).json({
                 status: true,
-                result: qrData
+                data: qrData
         });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

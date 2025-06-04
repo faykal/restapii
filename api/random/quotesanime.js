@@ -8,7 +8,7 @@ module.exports = {
         const { data } = await axios.get(`https://api.kenshiro.cfd/api/random/quotesanime`)
         res.status(200).json({
             status: true,
-            result: data.data
+            data: data.data
         });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

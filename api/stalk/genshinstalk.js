@@ -12,7 +12,7 @@ module.exports = {
                 const kall = fay.data.data
                 res.status(200).json({
                     status: true,
-                    result: kall.playerData
+                    data: kall.playerData
                 });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

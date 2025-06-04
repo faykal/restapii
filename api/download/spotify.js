@@ -39,7 +39,7 @@ module.exports = {
             const results = await spotify(url);
             res.status(200).json({
                 status: true,
-                result: results.result
+                data: results.result
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

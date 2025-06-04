@@ -38,7 +38,7 @@ module.exports = {
             const results = await tiktok(url);
             res.status(200).json({
                 status: true,
-                result: results.data
+                data: results.data
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

@@ -50,7 +50,7 @@ module.exports = {
             const anu = await igstalk(user); 
             res.status(200).json({
                 status: true,
-                result: anu
+                data: anu
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

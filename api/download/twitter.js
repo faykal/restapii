@@ -12,7 +12,7 @@ module.exports = {
             const fay = await axios.get(`https://api.agatz.xyz/api/twitter?url=${url}`)
             res.status(200).json({
                 status: true,
-                result: fay.data.data
+                data: fay.data.data
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

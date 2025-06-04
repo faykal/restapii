@@ -11,7 +11,7 @@ module.exports = {
             const fay = await axios.get(`https://api.vreden.my.id/api/ytmp4?url=${url}`)
             res.status(200).json({
                 status: true,
-                result: {
+                data: {
                     metadata: fay.data.result.metadata,
                     download: fay.data.result.download
                 }

@@ -22,7 +22,7 @@ module.exports = {
             })
             res.status(200).json({
                 status: true,
-                result: data.result
+                data: data.result
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

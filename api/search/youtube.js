@@ -20,7 +20,7 @@ module.exports = {
             }));
             res.status(200).json({
                 status: true,
-                result: ytTracks
+                data: ytTracks
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

@@ -49,7 +49,7 @@ module.exports = {
             const results = await capcutdl(url);
             res.status(200).json({
                 status: true,
-                result: results
+                data: results
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });

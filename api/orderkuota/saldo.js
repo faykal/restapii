@@ -17,7 +17,7 @@ module.exports = {
                 if (latestTransaction) {
          res.status(200).json({
             status: true, 
-            result: {
+            data: {
             saldo_qris: latestTransaction.balance
             }
         })
