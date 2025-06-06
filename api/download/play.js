@@ -1,4 +1,4 @@
-const axios = require("axios")
+const { search, ytmp3, ytmp4, ytdlv2, channel } = require('@vreden/youtube_scraper');
 module.exports = {
     name: 'YouTube Play',
     desc: 'Play song on youtube',
@@ -8,12 +8,14 @@ module.exports = {
         const { q } = req.query;
         if (!q) return res.status(400).json({ status: false, error: 'Url is required' });
         try {
-            const fay = await axios.get(`https://api.vreden.my.id/api/ytplaymp3?query=${q}`)
+            const result = await search(q)
+            const link = result.results[0].url
+            const fay = await ytmp3(link)
             res.status(200).json({
                 status: true,
                 data: {
-                    metadata: fay.data.result.metadata,
-                    download: fay.data.result.download
+                    metadata: fay.metadata,
+                    download: fay.download
                 }
             });
         } catch (error) {
