@@ -8,7 +8,7 @@ module.exports = {
         try {
     const { text } = req.query;
     if (!text) return res.status(400).json({ status: false, error: 'Text is required' });
-            const pedo = await axios.get(`https://skyzxu-brat.hf.space/brat-animated?text=${text}`, { responseType: "arraybuffer" })
+            const pedo = await axios.get(`https://fastrestapis.fasturl.cloud/maker/brat/animated?text=${text}&mode=animated`, { responseType: "arraybuffer" })
             let videoBuffer = pedo.data;
             res.writeHead(200, {
                 'Content-Type': 'video/mp4',
