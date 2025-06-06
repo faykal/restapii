@@ -8,13 +8,13 @@ module.exports = {
         try {
     const { text } = req.query;
     if (!text) return res.status(400).json({ status: false, error: 'Text is required' });
-            const pedo = await axios.get(`https://api.siputzx.my.id/api/m/brat?text=${text}&isAnimated=true`, { responseType: "arraybuffer" })
+            const pedo = await axios.get(`https://skyzxu-brat.hf.space/brat-animated?text=${text}`, { responseType: "arraybuffer" })
             let videoBuffer = pedo.data;
             res.writeHead(200, {
                 'Content-Type': 'video/mp4',
                 'Content-Length': videoBuffer.length,
             });
-            res.end(pedo);
+            res.end(videoBuffer);
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
         }
