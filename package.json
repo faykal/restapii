@@ -10,6 +10,7 @@
   "author": "rynn",
   "license": "MIT",
   "dependencies": {
+    "@vreden/youtube_scraper": "^1.2.7",
     "axios": "^1.6.8",
     "body-parser": "^1.20.3",
     "chalk": "^4.1.2",
