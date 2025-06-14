@@ -29,7 +29,7 @@ module.exports = {
             const fay = await fetchJson(`https://api.aladhan.com/v1/timingsByCity?city=${q}&country=Indonesia&method=8`)
             res.status(200).json({
                 status: true,
-                result: fay
+                result: fay[0]
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
