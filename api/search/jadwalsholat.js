@@ -1,34 +1,30 @@
 const axios = require("axios")
 const cheerio = require('cheerio');
- 
-const jadwalSholat = {
-  kota: async (kota) => {
-    if (!kota) return "Masukan Query Kota";
- 
-    try {
-      let { data } = await axios.get(`https://www.umroh.com/jadwal-sholat/${kota}`);
-      let $ = cheerio.load(data);
-      let hasil = [];
- 
-      $("table tbody tr").each((_, el) => {
-        let kolom = $(el).find("td");
-        hasil.push({
-          tanggal: $(kolom[0]).text().trim(),
-          imsyak: $(kolom[1]).text().trim(),
-          subuh: $(kolom[2]).text().trim(),
-          dzuhur: $(kolom[3]).text().trim(),
-          ashar: $(kolom[4]).text().trim(),
-          maghrib: $(kolom[5]).text().trim(),
-          isya: $(kolom[6]).text().trim(),
-        });
-      });
- 
-      return hasil;
-    } catch (e) {
-      return `Gagal mengambil data: ${e.message}`;
-    }
-  }
-};
+
+async function jadwalSholat(kota) {
+            try {
+              const {
+                data
+              } = await axios.get(`https://www.dream.co.id/jadwal-sholat/${kota}/`);
+              const $ = cheerio.load(data);
+              const rows = $(".table-index-jadwal tbody tr");
+              const jadwal = [];
+              rows.each((index, row) => {
+                const cols = $(row).find("td");
+                jadwal.push({
+                  subuh: $(cols[1]).text().trim(),
+                  duha: $(cols[2]).text().trim(),
+                  zuhur: $(cols[3]).text().trim(),
+                  asar: $(cols[4]).text().trim(),
+                  magrib: $(cols[5]).text().trim(),
+                  isya: $(cols[6]).text().trim()
+                });
+              });
+              return jadwal[0];
+            } catch (error) {
+              throw new Error("Gagal mengambil data jadwal sholat");
+            }
+          }
 
 module.exports = {
     name: 'Jadwal Sholat',
@@ -39,7 +35,7 @@ module.exports = {
         try {
             const { q } = req.query;
             if (!q) return res.status(400).json({ status: false, error: 'Query is required' });
-            const fay = await jadwalSholat.kota(q)
+            const fay = await jadwalSholat(q)
             res.status(200).json({
                 status: true,
                 data: fay
