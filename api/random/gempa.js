@@ -12,7 +12,7 @@ module.exports = {
             data: {
                 Tanggal: faykal.Tanggal,
                 Jam: faykal.Jam,
-                DateTime: faykal.DateTime,
+                DateTime: `${faykal.Tanggal}${faykal.jam}`,
                 Coordinates: faykal.Coordinates,
                 Lintang: faykal.Lintang,
                 Bujur: faykal.Bujur,
