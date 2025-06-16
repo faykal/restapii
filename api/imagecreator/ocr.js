@@ -21,8 +21,8 @@ async function kallocr(url) {
 }
 
 module.exports = {
-  name: 'OCR',
-  desc: 'OCR from image',
+  name: 'OCR Text Extractor',
+  desc: 'OCR (Optical Character Recognition) from image',
   category: 'Image Creator',
   params: ['url'],
   async run(req, res) {
