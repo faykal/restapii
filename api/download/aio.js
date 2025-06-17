@@ -97,7 +97,7 @@ const allInOneDownloader = {
 
 module.exports = {
     name: 'Aio',
-    desc: 'all In One Downloader',
+    desc: 'All In One Downloader',
     category: 'Downloader',
     params: ['url'],
     async run(req, res) {
