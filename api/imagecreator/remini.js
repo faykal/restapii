@@ -13,7 +13,7 @@ const getBuffer = async (url, options) => {
 				'DNT': 1,
 				'Upgrade-Insecure-Request': 1
 			},
-			...options,
+			...options, 
 			responseType: 'arraybuffer'
 		})
 		return res.data
@@ -98,7 +98,9 @@ module.exports = {
             const result = await pxpic.create(image, "enhance")
             res.status(200).json({
                 status: true,
-                data: result.resultImageUrl
+                data: {
+                  url: result.resultImageUrl
+                }
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
