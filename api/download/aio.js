@@ -96,8 +96,8 @@ const allInOneDownloader = {
 };
 
 module.exports = {
-    name: 'Facebook V2',
-    desc: 'Download on facebook',
+    name: 'Aio',
+    desc: 'all In One Downloader',
     category: 'Downloader',
     params: ['url'],
     async run(req, res) {
