@@ -14,7 +14,7 @@ async function getYouTubeProfile(username) {
   const banner = bannerMatch ? bannerMatch[0] : '';
   const subsMatch = html.match(/(\d[\d.,]*)\s+subscribers/i);
   let subscribers = subsMatch ? subsMatch[1] : null;
-  
+
   if (!subscribers) {
     const altRes = await fetch(`https://www.youtube.com/${username.startsWith('@') ? username : '@' + username}`, {
       headers: { 'User-Agent': 'Mozilla/5.0' }
@@ -54,7 +54,7 @@ module.exports = {
     name: 'YouTube',
     desc: 'Get info youtube account',
     category: 'Stalk',
-    params: ['@user'],
+    params: ['user'],
     async run(req, res) {
       const { user } = req.query;
       if (!user) return res.status(400).json({ status: false, error: 'User is required' })
