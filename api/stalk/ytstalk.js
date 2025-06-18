@@ -54,7 +54,7 @@ module.exports = {
     name: 'YouTube',
     desc: 'Get info youtube account',
     category: 'Stalk',
-    params: ['user'],
+    params: ['@user'],
     async run(req, res) {
       const { user } = req.query;
       if (!user) return res.status(400).json({ status: false, error: 'User is required' })
