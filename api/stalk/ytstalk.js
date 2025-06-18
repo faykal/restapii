@@ -52,7 +52,7 @@ async function getYouTubeProfile(username) {
 
 module.exports = {
     name: 'YouTube',
-    desc: 'Get info youtube account ( @user )',
+    desc: 'Get info youtube account (@user)',
     category: 'Stalk',
     params: ['user'],
     async run(req, res) {
