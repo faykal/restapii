@@ -1,7 +1,7 @@
 module.exports = {
     name: {
-        main: 'kall API !!',
-        copyright: 'Faykal'
+        main: `Kall API's`,
+        copyright: `Faykal`
     },
     description: 'Simple API with easy and minimalistic integration for WhatsApp Bot Developers.',
     icon: '/image/icon.png',
