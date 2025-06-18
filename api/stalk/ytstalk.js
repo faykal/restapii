@@ -1,15 +1,9 @@
 const cheerio = require('cheerio');
 
 async function getYouTubeProfile(username) {
-    if (typeof username !== 'string') {
-      throw new Error('Username tidak valid');
-    }
-    const cleanUsername = username.startsWith('@') ? username.slice(1) : username;
-    const res = await fetch(`https://m.youtube.com/${cleanUsername}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      }
-    });
+  const res = await fetch(`https://m.youtube.com/${username.startsWith('@') ? username : '@' + username}`, {
+    headers: { 'User-Agent': 'Mozilla/5.0' }
+  });
   const html = await res.text();
   const $ = cheerio.load(html);
   const name = $('meta[property="og:title"]').attr('content') || '';
@@ -22,7 +16,7 @@ async function getYouTubeProfile(username) {
   let subscribers = subsMatch ? subsMatch[1] : null;
 
   if (!subscribers) {
-    const altRes = await fetch(`https://www.youtube.com/${cleanUsername}`, {
+    const altRes = await fetch(`https://www.youtube.com/${username.startsWith('@') ? username : '@' + username}`, {
       headers: { 'User-Agent': 'Mozilla/5.0' }
     });
     const altHtml = await altRes.text();
@@ -58,7 +52,7 @@ async function getYouTubeProfile(username) {
 
 module.exports = {
     name: 'YouTube',
-    desc: 'Get info youtube account',
+    desc: 'Get info youtube account ( @user )',
     category: 'Stalk',
     params: ['user'],
     async run(req, res) {
