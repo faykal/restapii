@@ -8,7 +8,7 @@ module.exports = {
         try {
             const { url } = req.query;
             if (!url) return res.status(400).json({ status: false, error: 'Url is required' });
-            const fay = await axios.get(`https://api.agatz.xyz/api/pinterest?url=${url}`)
+            const fay = await axios.get(`https://api.siputzx.my.id/api/d/pinterest?url=${url}`)
             res.status(200).json({
                 status: true,
                 data: fay.data.data
