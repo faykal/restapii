@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         textContent.appendChild(description);
     
         const button = document.createElement('button');
-        button.className = 'px-4 py-2 text-sm font-medium text-white bg-gray-500 w-13 h-9 flex items-center justify-center hover:bg-gray-700 transition duration-300 flex-shrink-0 get-api-btn rounded'
+        button.className = 'px-4 py-2 text-sm font-medium text-white bg-gray-800 w-13 h-9 flex items-center justify-center hover:bg-gray-700 transition duration-300 flex-shrink-0 get-api-btn rounded';
         button.dataset.apiPath = item.path || '';
         button.dataset.apiName = itemName || '';
         button.dataset.apiDesc = item.desc || '';
