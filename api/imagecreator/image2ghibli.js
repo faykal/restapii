@@ -17,6 +17,7 @@ async function generateGhibliStyleImage(url) {
 
     const headers = {
       ...form.getHeaders(),
+      authorization: 'Bearer',
       'x-device-language': 'en',
       'x-device-platform': 'web',
       'x-device-uuid': uuid,
