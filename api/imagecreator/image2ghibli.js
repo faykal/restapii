@@ -10,14 +10,13 @@ async function generateGhibliStyleImage(url) {
 
     const uuid = randomUUID();
     const ext = '.' + mime.split('/')[1];
-    const filename = `Fiony_${randomBytes(4).toString('hex')}${ext}`;
+    const filename = `Faykal_${randomBytes(4).toString('hex')}${ext}`;
 
     const form = new FormData();
     form.append('file', buffer, { filename, contentType: mime });
 
     const headers = {
       ...form.getHeaders(),
-      authorization: 'Bearer', // Ganti dengan token yang valid
       'x-device-language': 'en',
       'x-device-platform': 'web',
       'x-device-uuid': uuid,
@@ -45,7 +44,7 @@ async function generateGhibliStyleImage(url) {
     const genRes = await axios.post(
       'https://widget-api.overchat.ai/v1/images/generations',
       payload,
-      { headers: { 'content-type': 'application/json', authorization: 'Bearer YOUR_TOKEN' } }
+      { headers: { 'content-type': 'application/json' } }
     );
 
     if (genRes.data && genRes.data.data && genRes.data.data[0] && genRes.data.data[0].url) {
@@ -68,9 +67,11 @@ module.exports = {
     try {
       const { url } = req.query;
       if (!url) return res.status(400).json({ status: false, error: 'Url is required' });
+
       const imageUrl = await generateGhibliStyleImage(url);
       const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
       const buffer = Buffer.from(response.data, 'binary');
+
       res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-Length': buffer.length,
