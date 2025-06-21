@@ -8,7 +8,7 @@ module.exports = {
         const { text } = req.query;
         if (!text) return res.status(400).json({ status: false, error: 'Text is required' });
         try {
-            const fay = await axios.get(`https://api.kenshiro.cfd/api/ai/bard?text=${text}`)
+            const fay = await axios.get(`https://api.siputzx.my.id/api/ai/bard?query=${text}`)
                 res.status(200).json({
                     status: true,
                     data: fay.data.data
