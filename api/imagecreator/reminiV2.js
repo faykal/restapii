@@ -74,11 +74,6 @@ async function imglarger(buffer, options = {}) {
     }
 }
 
-// Contoh Pemakaiannya:
-const fs = require('fs');
-const resp = await imglarger(fs.readFileSync('./image.jpg'), { scale: '4' });
-console.log(resp);
-
 module.exports = {
     name: 'Remini V2',
     desc: 'Remini from image',
