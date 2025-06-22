@@ -55,7 +55,7 @@ async function imgUpscale(urlImage, rasio) {
     result = res;
   } while (result.data.status !== "success");
 
-  return result;
+  return result.data.downloadUrls[0];
 }
 
 module.exports = {
