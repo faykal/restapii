@@ -32,7 +32,7 @@ async function searchInstagramUser(user) {
 
 module.exports = {
     name: 'Instagram V2',
-    desc: 'Get info instagram account',
+    desc: 'Get info instagram account (@user)',
     category: 'Stalk',
     params: ['user'],
     async run(req, res) {
