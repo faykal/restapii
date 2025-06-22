@@ -33,12 +33,12 @@ async function imageTogta(urlImage) {
    
    const { data } = await axios.post("https://photostylelab.com/wp-admin/admin-ajax.php", form, headers)
    
-   return data;
+   return data.data;
 }
 
 module.exports = {
   name: 'Image To Gta',
-  desc: 'Convert image to ghibli style',
+  desc: 'Convert image to gta',
   category: 'Image Creator',
   params: ['url'],
   async run(req, res) {
