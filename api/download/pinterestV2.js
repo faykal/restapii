@@ -48,7 +48,6 @@ async function snappinDownload(pinterestUrl) {
     }
  
     return {
-      status: true,
       thumb,
       video: videoUrl,
       image: videoUrl ? null : imageUrl
