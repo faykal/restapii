@@ -8,7 +8,7 @@ module.exports = {
             try {
                 const { q } = req.query;
                 if (!q) return res.status(400).json({ status: false, error: 'Query is required' });
-                const fay = await axios.get(`https://api.agatz.xyz/api/spotify?message=${q}`)
+                const fay = await axios.get(`https://api.siputzx.my.id/api/s/spotify?query=${q}`)
                 res.status(200).json({
                     status: true,
                     data: fay.data.data
