@@ -46,7 +46,7 @@ async function spotifyDownload(url) {
 }
 
 module.exports = {
-    name: 'Spotify',
+    name: 'Spotify V2',
     desc: 'Download song on spotify',
     category: 'Downloader',
     params: ['url'],
