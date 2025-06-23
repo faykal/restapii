@@ -1,4 +1,4 @@
-const { search, ytmp3, ytmp4, ytdlv2, channel } = require('@vreden/youtube_scraper');
+const axios = require("axios");
 module.exports = {
     name: 'YouTube Video',
     desc: 'Video download',
@@ -8,13 +8,10 @@ module.exports = {
         const { url } = req.query;
         if (!url) return res.status(400).json({ status: false, error: 'Url is required' });
         try {
-            const fay = await ytmp4(url)
+            const fay = await axios.get(`https://api.kenshiro.cfd/api/downloader/ytv?url=${url}`)
             res.status(200).json({
                 status: true,
-                data: {
-                    metadata: fay.metadata,
-                    download: fay.download
-                }
+                data: fay.data.data
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
