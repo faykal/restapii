@@ -65,22 +65,18 @@ async function LirikByPontaJs(url) {
 async function main(query) {
   const daftarLirik = await LirikByPonta(query);
   if (daftarLirik.length === 0) {
-    console.log("Tidak ditemukan lagu untuk query:", query);
-    return;
+    return { message: `Tidak ditemukan lagu untuk query: ${query}` };
   }
-
+  const result = [];
   for (const { title, link } of daftarLirik) {
-    console.log(`\nJudul: ${title}`);
-    console.log(`Link: ${link}`);
-
     const lirik = await LirikByPontaJs(link);
-    if (lirik) {
-      console.log("Lirik:\n" + lirik);
-    } else {
-      console.log("Gagal mengambil lirik.");
-    }
-    console.log("--------------------------------------------------");
+    result.push({
+      title,
+      link,
+      lirik: lirik || "Gagal mengambil lirik."
+    });
   }
+  return result;
 }
 
 module.exports = {
