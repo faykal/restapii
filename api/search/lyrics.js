@@ -79,6 +79,7 @@ async function main(query) {
   return result;
 }
 
+
 module.exports = {
     name: 'Lyrics',
     desc: 'Search lyrics on song',
@@ -91,7 +92,7 @@ module.exports = {
                 const fay = await main(q)
                 res.status(200).json({
                     status: true,
-                    data: fay
+                    data: fay[0]
                 });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
