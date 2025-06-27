@@ -1,84 +1,47 @@
 const axios = require('axios');
-const cheerio = require('cheerio');
- 
-function extractVideoId(url) {
-  const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/)
-  return match ? match[1] : null
-}
- 
+
 async function ytmp3(url) {
-  if (!url) throw 'Masukkan URL YouTube!'
- 
+
+  const format = 'mp3'; // ganti mp4 buat video bray
+  const id = (url.match(/(?:v=|\.be\/)([a-zA-Z0-9_-]{11})/) || [])[1];
+  if (!id) return 'error: invalid YouTube URL';
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const jantung = {
+    referer: 'https://id.ytmp3.plus/'
+  };
+
   try {
-    const form = new URLSearchParams()
-    form.append('q', url)
-    form.append('type', 'mp3')
- 
-    const res = await axios.post('https://yt1s.click/search', form.toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Origin': 'https://yt1s.click',
-        'Referer': 'https://yt1s.click/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-      },
-    })
- 
-    const $ = cheerio.load(res.data)
-    const link = $('a[href*="download"]').attr('href')
- 
-    if (link) {
-      return {
-        link,
-        title: $('title').text().trim() || 'Unknown Title',
-        filesize: null,
-        duration: null,
-        success: true
-      }
+    const init = await axios.get('https://d.ymcdn.org/api/v1/init?p=y&23=1llum1n471&_=' + Math.random(), { headers: jantung });
+    const cu = init.data?.convertURL;
+    if (!cu) return 'error: convertURL not found';
+
+    const convert = await axios.get(`${cu}&v=${id}&f=${format}&_=` + Math.random(), { headers: jantung });
+    const { downloadURL, progressURL } = convert.data;
+    if (!downloadURL) return 'error: downloadURL not found';
+
+    for (let x = 0; x < 10; x++) {
+      try {
+        const r = await axios.get(downloadURL, {
+          headers: jantung,
+          responseType: 'stream',
+          maxContentLength: 1
+        });
+        if (r.status === 200) break;
+      } catch {}
+      await sleep(3000);
     }
+
+    const meta = await axios.get(progressURL, { headers: jantung });
+    return JSON.stringify({
+    title: meta.data?.title || 'unknown',
+    format,
+    downloadURL
+  }, null, 2);
   } catch (e) {
-    console.warn('Gagal:', e.message || e.toString())
+    const err = e.response?.data || e.message;
+    return 'error: ' + JSON.stringify(err, null, 2);
   }
- 
-  try {
-    const videoId = extractVideoId(url)
-    if (!videoId) throw 'Video ID tidak valid'
- 
-    const payload = {
-      fileType: 'MP3',
-      id: videoId
-    }
- 
-    const res = await axios.post('https://ht.flvto.online/converter', payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Origin': 'https://ht.flvto.online',
-        'Referer': `https://ht.flvto.online/widget?url=https://www.youtube.com/watch?v=${videoId}`,
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 13)',
-      },
-    })
- 
-    const data = res?.data
-    if (!data || typeof data !== 'object') {
-      throw 'ga ada respon'
-    }
- 
-    if (data.status !== 'ok' || !data.link) {
-      throw `Status gagal: ${data.msg || 'Tidak diketahui'}`
-    }
- 
-    return {
-      link: data.link,
-      title: data.title,
-      filesize: data.filesize,
-      duration: data.duration,
-      success: true
-    }
- 
-  } catch (e) {
-    console.warn('Gagal:', e.message || e.toString())
-  }
- 
-  throw 'ga ada link download.'
 }
 
 module.exports = {
@@ -93,7 +56,7 @@ module.exports = {
             const fay = await ytmp3(url)
             res.status(200).json({
                 status: true,
-                data: fay
+                data: JSON.parse(fay)
             });
         } catch (error) {
             res.status(500).json({ status: false, error: error.message });
