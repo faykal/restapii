@@ -1,84 +1,89 @@
-const axios = require("axios")
- 
-function convertEpochToDate(epoch) {
-  return new Date(parseInt(epoch) * 1000).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+async function getTurnstileToken(targetUrl, siteKey) {
+  const resp = await axios.get('https://api.yogik.id/tools/tcloudflare/', { params: { url: targetUrl, siteKey } });
+  if (!resp.data?.data?.token) throw new Error('Token tidak ditemukan di respons API');
+  return resp.data.data.token;
 }
- 
-async function cekAkunFreeFire(uid, region = 'id', key = 'FFwlx') {
+
+async function fetchAndParseFreeFire(uid) {
   try {
-    const endpoint = 'https://client-hlgamingofficial.vercel.app/api/ff-hl-gaming-official-api-account-v2-latest/account'
-    const headers = {
-      'Content-Type': 'application/json',
-      'Origin': 'https://www.hlgamingofficial.com',
-      'Referer': 'https://www.hlgamingofficial.com/',
-      'User-Agent': 'Mozilla/5.0'
-    }
- 
-    const body = { uid, region, key }
-    const { data } = await axios.post(endpoint, body, { headers })
- 
-    if (!data?.AccountInfo) throw new Error("ga ada respon, mungkin uid/region salah")
- 
-    const {
-      AccountInfo,
-      AccountProfileInfo,
-      GuildInfo,
-      captainBasicInfo,
-      creditScoreInfo,
-      petInfo,
-      socialinfo
-    } = data
- 
-    const info = {
-      status: true,
-      uid,
-      nickname: AccountInfo.AccountName,
-      level: AccountInfo.AccountLevel,
-      exp: AccountInfo.AccountEXP,
-      like: AccountInfo.AccountLikes,
-      region: AccountInfo.AccountRegion,
-      title: AccountInfo.Title,
-      seasonId: AccountInfo.AccountSeasonId,
-      releaseVersion: AccountInfo.ReleaseVersion,
-      createTime: convertEpochToDate(AccountInfo.AccountCreateTime),
-      lastLogin: convertEpochToDate(AccountInfo.AccountLastLogin),
-      rank: {
-        battleRoyale: {
-          max: AccountInfo.BrMaxRank,
-          point: AccountInfo.BrRankPoint,
-          show: AccountInfo.ShowBrRank
-        },
-        clashSquad: {
-          max: AccountInfo.CsMaxRank,
-          point: AccountInfo.CsRankPoint,
-          show: AccountInfo.ShowCsRank
-        }
+  const targetUrl = 'https://freefireinfo.in/get-free-fire-account-information-via-uid/';
+  const siteKey = '0x4AAAAAABAe_Da-31Q7nqIm';
+  const token = await getTurnstileToken(targetUrl, siteKey);
+
+  const html = await axios.post(
+    targetUrl,
+    new URLSearchParams({ uid, 'cf-turnstile-response': token }).toString(),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9'
       },
-      diamondCost: AccountInfo.DiamondCost,
-      outfitIDs: AccountProfileInfo?.EquippedOutfit || [],
-      skillIDs: AccountProfileInfo?.EquippedSkills || [],
-      weapons: captainBasicInfo?.EquippedWeapon || [],
-      creditScore: creditScoreInfo?.creditScore || 0,
-      signature: socialinfo?.AccountSignature || '-',
-      guild: GuildInfo?.GuildID ? {
-        id: GuildInfo.GuildID,
-        name: GuildInfo.GuildName,
-        owner: GuildInfo.GuildOwner,
-        level: GuildInfo.GuildLevel,
-        members: GuildInfo.GuildMember,
-        capacity: GuildInfo.GuildCapacity
-      } : null,
-      pet: petInfo?.id ? {
-        id: petInfo.id,
-        name: petInfo.name,
-        level: petInfo.level,
-        exp: petInfo.exp,
-        selectedSkill: petInfo.selectedSkillId,
-        skin: petInfo.skinId
-      } : null
+      withCredentials: true
     }
- 
-    return info
+  ).then(r => r.data);
+
+  const $ = cheerio.load(html);
+  const $result = $('.result');
+
+  $result.find('br').replaceWith('\n');
+  const lines = $result
+    .text()
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l);
+
+  const petIndex = lines.findIndex(l => l.includes('Pet Information'));
+  const guildIndex = lines.findIndex(l => l.includes('Guild Information'));
+
+  const accountInfo = {};
+  lines
+    .slice(0, petIndex > -1 ? petIndex : guildIndex > -1 ? guildIndex : lines.length)
+    .filter(l => l.startsWith('✔'))
+    .forEach(line => {
+      const [key, ...vals] = line.slice(1).trim().split(':');
+      accountInfo[key.trim()] = vals.join(':').trim();
+    });
+
+  const petInfo = {};
+  if (petIndex > -1) {
+    lines
+      .slice(petIndex + 1, guildIndex > -1 ? guildIndex : lines.length)
+      .filter(l => l.startsWith('✔'))
+      .forEach(line => {
+        const [key, ...vals] = line.slice(1).trim().split(':');
+        petInfo[key.trim()] = vals.join(':').trim();
+      });
+  }
+
+  const guildInfo = {};
+  if (guildIndex > -1) {
+    lines
+      .slice(guildIndex + 1)
+      .filter(l => l.startsWith('✔'))
+      .forEach(line => {
+        const [key, ...vals] = line.slice(1).trim().split(':');
+        guildInfo[key.trim()] = vals.join(':').trim();
+      });
+  }
+
+  const equipped = {};
+  const $equipDiv = $('.equipped-items');
+  $equipDiv.find('h4').each((_, h4) => {
+    const category = $(h4).text().trim();
+    equipped[category] = [];
+    const items = $(h4).nextUntil('h4', '.equipped-item');
+    items.each((_, item) => {
+      const $item = $(item);
+      const name = $item.find('p').text().trim();
+      const img = $item.find('img').attr('data-lazy-src') || $item.find('img').attr('src');
+      equipped[category].push({ name, image: img });
+    });
+  });
+
+  return { accountInfo, petInfo, guildInfo, equipped };
  
   } catch (e) {
     return {
@@ -98,7 +103,7 @@ module.exports = {
             try {
                 const { id } = req.query;
                 if (!id) return res.status(400).json({ status: false, error: 'Id is required' });
-                const fay = await cekAkunFreeFire(id)
+                const fay = await fetchAndParseFreeFire(id)
                 res.status(200).json({
                     status: true,
                     data: fay
