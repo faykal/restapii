@@ -19,7 +19,6 @@ async function getTurnstileToken(targetUrl, siteKey) {
 }
 
 async function fetchAndParseFreeFire(uid) {
-  try {
     const targetUrl = 'https://freefireinfo.in/get-free-fire-account-information-via-uid/';
     const siteKey = '0x4AAAAAABAe_Da-31Q7nqIm';
     const token = await getTurnstileToken(targetUrl, siteKey);
@@ -94,13 +93,6 @@ async function fetchAndParseFreeFire(uid) {
       guildInfo,
       equipped
     };
-  } catch (error) {
-    return {
-      status: false,
-      message: 'Gagal mengambil data akun.',
-      error: error?.response?.data || error.message
-    };
-  }
 }
 
 module.exports = {
