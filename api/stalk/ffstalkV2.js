@@ -2,104 +2,89 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 async function getTurnstileToken(targetUrl, siteKey) {
-  try {
-    const response = await axios.get("https://fgsi1-restapi.hf.space/api/tools/bypasscf/v5", {
-      params: {
-        apikey: "fgsiapi-bd29837-6d",
-        url: targetUrl,
-        sitekey: siteKey,
-        mode: "turnstile-min",
-      },
-      headers: {
-        accept: "application/json",
-      },
-    });
-    if (response.data && response.data.data && response.data.data.token) {
-      return response.data.data.token;
-    } else {
-      throw new Error("Token tidak ditemukan di respons API");
-    }
-  } catch (error) {
-    throw new Error(`Gagal mendapatkan token Turnstile: ${error.response?.data || error.message}`);
-  }
+  const resp = await axios.get('https://api.yogik.id/tools/tcloudflare/', { params: { url: targetUrl, siteKey } });
+  if (!resp.data?.data?.token) throw new Error('Token tidak ditemukan di respons API');
+  return resp.data.data.token;
 }
 
 async function fetchAndParseFreeFire(uid) {
-    const targetUrl = 'https://freefireinfo.in/get-free-fire-account-information-via-uid/';
-    const siteKey = '0x4AAAAAABAe_Da-31Q7nqIm';
-    const token = await getTurnstileToken(targetUrl, siteKey);
-    const html = await axios.post(
-      targetUrl,
-      new URLSearchParams({
-        uid,
-        'cf-turnstile-response': token
-      }).toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9'
-        },
-        withCredentials: true
-      }
-    ).then(r => r.data);
-    const $ = cheerio.load(html);
-    const $result = $('.result');
-    $result.find('br').replaceWith('\n');
-    const lines = $result
-      .text()
-      .split('\n')
-      .map(l => l.trim())
-      .filter(l => l);
-    const petIndex = lines.findIndex(l => l.includes('Pet Information'));
-    const guildIndex = lines.findIndex(l => l.includes('Guild Information'));
-    const accountInfo = {};
+  const targetUrl = 'https://freefireinfo.in/get-free-fire-account-information-via-uid/';
+  const siteKey = '0x4AAAAAABAe_Da-31Q7nqIm';
+  const token = await getTurnstileToken(targetUrl, siteKey);
+
+  const html = await axios.post(
+    targetUrl,
+    new URLSearchParams({ uid, 'cf-turnstile-response': token }).toString(),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9'
+      },
+      withCredentials: true
+    }
+  ).then(r => r.data);
+
+  const $ = cheerio.load(html);
+  const $result = $('.result');
+
+  $result.find('br').replaceWith('\n');
+  const lines = $result
+    .text()
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l);
+
+  const petIndex = lines.findIndex(l => l.includes('Pet Information'));
+  const guildIndex = lines.findIndex(l => l.includes('Guild Information'));
+
+  const accountInfo = {};
+  lines
+    .slice(0, petIndex > -1 ? petIndex : guildIndex > -1 ? guildIndex : lines.length)
+    .filter(l => l.startsWith('✔'))
+    .forEach(line => {
+      const [key, ...vals] = line.slice(1).trim().split(':');
+      accountInfo[key.trim()] = vals.join(':').trim();
+    });
+
+  const petInfo = {};
+  if (petIndex > -1) {
     lines
-      .slice(0, petIndex > -1 ? petIndex : guildIndex > -1 ? guildIndex : lines.length)
+      .slice(petIndex + 1, guildIndex > -1 ? guildIndex : lines.length)
       .filter(l => l.startsWith('✔'))
       .forEach(line => {
         const [key, ...vals] = line.slice(1).trim().split(':');
-        accountInfo[key.trim()] = vals.join(':').trim();
+        petInfo[key.trim()] = vals.join(':').trim();
       });
-    const petInfo = {};
-    if (petIndex > -1) {
-      lines
-        .slice(petIndex + 1, guildIndex > -1 ? guildIndex : lines.length)
-        .filter(l => l.startsWith('✔'))
-        .forEach(line => {
-          const [key, ...vals] = line.slice(1).trim().split(':');
-          petInfo[key.trim()] = vals.join(':').trim();
-        });
-    }
-    const guildInfo = {};
-    if (guildIndex > -1) {
-      lines
-        .slice(guildIndex + 1)
-        .filter(l => l.startsWith('✔'))
-        .forEach(line => {
-          const [key, ...vals] = line.slice(1).trim().split(':');
-          guildInfo[key.trim()] = vals.join(':').trim();
-        });
-    }
-    const equipped = {};
-    const $equipDiv = $('.equipped-items');
-    $equipDiv.find('h4').each((_, h4) => {
-      const category = $(h4).text().trim();
-      equipped[category] = [];
-      const items = $(h4).nextUntil('h4', '.equipped-item');
-      items.each((_, item) => {
-        const $item = $(item);
-        const name = $item.find('p').text().trim();
-        const img = $item.find('img').attr('data-lazy-src') || $item.find('img').attr('src');
-        equipped[category].push({ name, image: img });
+  }
+
+  const guildInfo = {};
+  if (guildIndex > -1) {
+    lines
+      .slice(guildIndex + 1)
+      .filter(l => l.startsWith('✔'))
+      .forEach(line => {
+        const [key, ...vals] = line.slice(1).trim().split(':');
+        guildInfo[key.trim()] = vals.join(':').trim();
       });
+  }
+
+  const equipped = {};
+  const $equipDiv = $('.equipped-items');
+  $equipDiv.find('h4').each((_, h4) => {
+    const category = $(h4).text().trim();
+    equipped[category] = [];
+    const items = $(h4).nextUntil('h4', '.equipped-item');
+    items.each((_, item) => {
+      const $item = $(item);
+      const name = $item.find('p').text().trim();
+      const img = $item.find('img').attr('data-lazy-src') || $item.find('img').attr('src');
+      equipped[category].push({ name, image: img });
     });
-    return {
-      accountInfo,
-      petInfo,
-      guildInfo,
-      equipped
-    };
+  });
+
+  return { accountInfo, petInfo, guildInfo, equipped };
 }
+
 
 module.exports = {
     name: 'FreeFire V2',
